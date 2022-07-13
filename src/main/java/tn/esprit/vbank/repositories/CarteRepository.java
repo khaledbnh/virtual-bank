@@ -3,9 +3,9 @@ package tn.esprit.vbank.repositories;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import tn.esprit.vbank.entities.Notification;
+import tn.esprit.vbank.entities.Carte;
 
 @Repository
-public interface NotificationRepository extends CrudRepository<Notification, Long> {
+public interface CarteRepository extends CrudRepository<Carte, Long> {
 
 }
