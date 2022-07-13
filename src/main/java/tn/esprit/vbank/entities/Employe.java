@@ -35,6 +35,8 @@ public class Employe implements Serializable{
 	private String password;
 	
 	private boolean actif;
+  
+  private String role = "employe";
 	
 	@Enumerated(EnumType.STRING)
 	private AppointmentStatus appointmentStatus;
