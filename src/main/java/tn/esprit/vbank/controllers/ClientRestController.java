@@ -1,4 +1,4 @@
-package tn.esprit.controllers;
+package tn.esprit.vbank.controllers;
 
 public class ClientRestController {
 
