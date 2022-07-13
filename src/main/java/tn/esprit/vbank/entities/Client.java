@@ -2,6 +2,9 @@ package tn.esprit.vbank.entities;
 
 import lombok.*;
 
+import java.util.Collection;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -21,6 +24,14 @@ public class Client extends User {
     @Column(name = "comptes")
     private List<Compte> comptes;
 
+
+	  @Column(name="nom")
+	  private String nom;
+	
+	  @OneToMany(mappedBy="client")
+    private List<Demande> demandes ;
+
     @Column(name = "role")
     private String role = "";
+
 }
