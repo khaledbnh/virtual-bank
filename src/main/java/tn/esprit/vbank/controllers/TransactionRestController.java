@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,38 +43,44 @@ public class TransactionRestController {
 		return result;
 	}
 	
+	@GetMapping("/getTransactionsDuCompte")
+	public List<Transaction> getTransactionsByCompteId() {
+		List<Transaction> result = transactionService.getAllTransactions();
+		return result;
+	}
+	
 	@PostMapping("/faireOperation")
 	public ResponseEntity creerTransaction(@RequestBody TransactionInput input) {
 		if(!InputValidator.isInputValid(input))
 			return new ResponseEntity<>("Invalid input !", HttpStatus.BAD_REQUEST);
 		Transaction transaction = new Transaction();
 		transaction.setNomClient(input.getNomClient());
-		transaction.setTypeIdentiteClient(TypeIdentiteClient.valueOf(input.getTypeIdentiteClient()));
+		transaction.setTypeIdentiteClient(TypeIdentiteClient.valueOf(input.getTypeIdentiteClient().toUpperCase()));
 		transaction.setNumeroIdentiteClient(input.getNumeroIdentiteClient());
 		if(input.getCompteSource().equals("0")) {
-			Compte compteDestinataire = compteService.getCompteById(Long.valueOf(input.getCompteDestinataire()));
-			if(compteDestinataire == null)
+			Optional<Compte> compteDestinataire = compteService.getCompteById(Long.valueOf(input.getCompteDestinataire()));
+			if(!compteDestinataire.isPresent())
 				return new ResponseEntity<>("Compte destinataire inexistant !", HttpStatus.BAD_REQUEST);
 			transaction.setTypeTransaction(TypeTransaction.RETRAIT);
-			transaction.setCompteDestinataire(compteDestinataire);
+			transaction.setCompteDestinataire(compteDestinataire.get());
 			transaction.setCompteSource(null);
 		} else if(input.getCompteDestinataire().equals("0")) {
-			Compte compteSource = compteService.getCompteById(Long.valueOf(input.getCompteSource()));
-			if(compteSource == null)
+			Optional<Compte> compteSource = compteService.getCompteById(Long.valueOf(input.getCompteSource()));
+			if(!compteSource.isPresent())
 				return new ResponseEntity<>("Compte source inexistant !", HttpStatus.BAD_REQUEST);
 			transaction.setTypeTransaction(TypeTransaction.DEPOT);
-			transaction.setCompteSource(compteSource);
+			transaction.setCompteSource(compteSource.get());
 			transaction.setCompteDestinataire(null);
 		} else {
-			Compte compteSource = compteService.getCompteById(Long.valueOf(input.getCompteSource()));
-			if(compteSource == null)
+			Optional<Compte> compteSource = compteService.getCompteById(Long.valueOf(input.getCompteSource()));
+			if(!compteSource.isPresent())
 				return new ResponseEntity<>("Compte source inexistant !", HttpStatus.BAD_REQUEST);
-			Compte compteDestinataire = compteService.getCompteById(Long.valueOf(input.getCompteDestinataire()));
-			if(compteSource == null)
+			Optional<Compte> compteDestinataire = compteService.getCompteById(Long.valueOf(input.getCompteDestinataire()));
+			if(!compteDestinataire.isPresent())
 				return new ResponseEntity<>("Compte destinataire inexistant !", HttpStatus.BAD_REQUEST);
 			transaction.setTypeTransaction(TypeTransaction.VIREMENT);
-			transaction.setCompteSource(compteSource);
-			transaction.setCompteDestinataire(compteDestinataire);
+			transaction.setCompteSource(compteSource.get());
+			transaction.setCompteDestinataire(compteDestinataire.get());
 		}
 		
 
@@ -81,7 +88,8 @@ public class TransactionRestController {
 		transaction.setTimestamp(new Timestamp(System.currentTimeMillis()));
 		transaction.setReference(TransactionUtils.generateTransactionReference());
 		transactionService.createOrUpdateTransaction(transaction);
-		return new ResponseEntity<>("Entite cree avec succes : " + transaction.toString(), HttpStatus.OK);
+		return new ResponseEntity<>("Operation fini avec succes : "
+				+ "Reference transaction : " + transaction.getReference(), HttpStatus.OK);	
 	}
 	
 	@DeleteMapping("/effacerTransaction/{id}")
