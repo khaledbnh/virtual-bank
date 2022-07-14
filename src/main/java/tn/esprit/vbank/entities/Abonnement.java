@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -33,7 +34,17 @@ public class Abonnement {
 
 	private String description;
 
+	@ElementCollection
+	private Map<String, String> avantages = new HashMap<>();
+
+	private String type;
+
+	private float frais;
+
 	@OneToMany
 	private List<Compte> comptes;
+
+	@OneToMany
+	private List<Carte> cartes;
 
 }

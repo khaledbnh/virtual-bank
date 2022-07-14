@@ -15,7 +15,6 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tn.esprit.vbank.enums.TypeCarte;
 
 @Entity
 @Data
@@ -27,7 +26,6 @@ import tn.esprit.vbank.enums.TypeCarte;
 public class Carte {
 
 	@Id
-	@GeneratedValue
 	private Long id;
 
 	@Temporal(value = TemporalType.DATE)
@@ -35,9 +33,9 @@ public class Carte {
 
 	private int ccv;
 
-	private TypeCarte typeCarte;
+	private String type;
 
 	@ManyToOne
-	private Compte compte;
+	private Abonnement abonnement;
 
 }

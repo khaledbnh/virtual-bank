@@ -27,7 +27,9 @@ public class Notification {
 
 	private String sujet;
 
-	private String description;
+	private String contenu;
+	
+	private String type;
 
 	@ManyToOne
 	private User user;
