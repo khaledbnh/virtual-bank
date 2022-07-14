@@ -1,6 +1,7 @@
 package tn.esprit.vbank.entities;
 
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
@@ -35,8 +36,13 @@ import tn.esprit.vbank.enums.TypeCompte;
 @AllArgsConstructor
 @Table(name = "T_COMPTE")
 
-public class Compte {
+public class Compte implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3477562731811202080L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long compteId;
