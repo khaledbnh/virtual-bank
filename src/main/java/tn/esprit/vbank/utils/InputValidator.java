@@ -7,9 +7,9 @@ public class InputValidator {
 
     private static final Pattern numeroComptePattern = Pattern.compile("^[0-9]{8}$");
 
-    public static boolean isNumeroCompteValid(String numeroCompte) {
+    /*public static boolean isNumeroCompteValid(String numeroCompte) {
         return numeroComptePattern.matcher(numeroCompte).find();
-    }
+    }*/
     
     public static boolean isNumeroCinValid(String numeroCin) {
         return numeroComptePattern.matcher(numeroCin).find();
@@ -29,15 +29,14 @@ public class InputValidator {
         if (transactionInput.getCompteSource().equals("0") && transactionInput.getCompteDestinataire().equals("0"))
         	return false;        
         
-        if (!transactionInput.getCompteSource().equals("0") && !isNumeroCompteValid(transactionInput.getCompteSource()))
+     /*   if (!transactionInput.getCompteSource().equals("0") && !isNumeroCompteValid(transactionInput.getCompteSource()))
             return false;
 
         if (transactionInput.getCompteDestinataire().equals("0") && !isNumeroCompteValid(transactionInput.getCompteDestinataire()))
             return false;
-        
-        if (!transactionInput.getTypeIdentiteClient().equalsIgnoreCase("CIN") 
-        		|| !transactionInput.getTypeIdentiteClient().equalsIgnoreCase("PASSPORT")
-        		|| isNumeroCinValid(transactionInput.getNumeroIdentiteClient())) {
+       */ 
+        if ((!transactionInput.getTypeIdentiteClient().equalsIgnoreCase("CIN") && !transactionInput.getTypeIdentiteClient().equalsIgnoreCase("PASSPORT"))
+        		|| !isNumeroCinValid(transactionInput.getNumeroIdentiteClient())) {
         	return false;
         }
 

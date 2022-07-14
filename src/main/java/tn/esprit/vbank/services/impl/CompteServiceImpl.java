@@ -1,6 +1,7 @@
 package tn.esprit.vbank.services.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,8 @@ public class CompteServiceImpl implements ICompteService {
 	private CompteRepository compteRepository;
 
 	@Override
-	public Compte getCompteById(Long id) {
-		return compteRepository.findById(id).get();
+	public Optional<Compte> getCompteById(Long id) {
+		return compteRepository.findById(id);
 	}
 
 	@Override

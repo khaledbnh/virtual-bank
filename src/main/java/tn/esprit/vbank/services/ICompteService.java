@@ -1,12 +1,13 @@
 package tn.esprit.vbank.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import tn.esprit.vbank.entities.Compte;
 
 public interface ICompteService {
 
-	Compte getCompteById(Long id);
+	Optional<Compte> getCompteById(Long id);
 
 	List<Compte> listComptes();
 
