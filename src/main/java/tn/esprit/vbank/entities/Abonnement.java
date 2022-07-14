@@ -33,8 +33,6 @@ public class Abonnement {
 
 	private String description;
 
-	private Map<String, String> avantages = new HashMap<>();
-
 	@OneToMany
 	private List<Compte> comptes;
 
