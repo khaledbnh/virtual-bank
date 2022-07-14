@@ -1,12 +1,17 @@
 package tn.esprit.vbank.entities;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -15,6 +20,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tn.esprit.vbank.enums.TypeIdentiteClient;
+import tn.esprit.vbank.enums.TypeTransaction;
 
 @Entity
 @Data
@@ -33,20 +40,41 @@ public class Transaction implements Serializable {
 	
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction_seq")
-    private long id;
+    @Column(name = "id")
+    private Long id;
+    
+    @ManyToOne
+    @JoinColumn(name = "compteId", insertable=false, updatable=false)
+    private Compte compteSource;
 
-    private long compteSourceId;
-
-    private long CompteDestinataireId;
-
+    @ManyToOne
+    @JoinColumn(name = "compteId", insertable=false, updatable=false)
+    private Compte compteDestinataire;
+    
+    @Column(name = "nomClient")
+    private String nomClient;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "typeIdentiteClient")
+    private TypeIdentiteClient typeIdentiteClient;
+    
+    @Column(name = "numeroIdentiteClient")
+    private String numeroIdentiteClient;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "typeTransaction")
+    private TypeTransaction typeTransaction;
+    
+    @Column(name = "nomDestinataire")
     private String nomDestinataire;
-
+    
+    @Column(name = "montant")
     private double montant;
 
-    private Date dateDebut;
+    @Column(name = "timestamp")
+    private Timestamp timestamp;
 
-    private Date dateFin;
-
+    @Column(name = "reference")
     private String reference;
 
 }
