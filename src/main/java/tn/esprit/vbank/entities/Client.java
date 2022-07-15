@@ -20,18 +20,20 @@ import java.util.List;
 @Table(name = "T_CLIENT")
 public class Client extends User {
 
-    @OneToMany
-    @Column(name = "comptes")
-    private List<Compte> comptes;
+	@OneToMany
+	@Column(name = "comptes")
+	private List<Compte> comptes;
 
+	@Column(name = "nom")
+	private String nom;
 
-	  @Column(name="nom")
-	  private String nom;
-	
-	  @OneToMany(mappedBy="client")
-    private List<Demande> demandes ;
+	@OneToMany(mappedBy = "client")
+	private List<Demande> demandes;
 
-    @Column(name = "role")
-    private String role = "";
+	@OneToMany(mappedBy = "client")
+	private List<Compte> compte;
+
+	@Column(name = "role")
+	private String role = "";
 
 }
