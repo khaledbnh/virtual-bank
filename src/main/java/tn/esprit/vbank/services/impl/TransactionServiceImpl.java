@@ -35,4 +35,9 @@ public class TransactionServiceImpl implements ITransactionService {
 		return transactionRepo.findById(id).get();
 	}
 
+	@Override
+	public List<Transaction> getTransactionsDuCompte(Long id) {
+		return transactionRepo.getTransactionsByCompteId(id);
+	}
+
 }
