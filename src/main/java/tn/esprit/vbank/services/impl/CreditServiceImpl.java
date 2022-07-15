@@ -51,6 +51,18 @@ public class CreditServiceImpl implements ICreditService{
 		try {
 			l.info(" Process has started");
 			Credit cr =creditRepository.findById(id).get();
+			double revenu = c.getRevenu();
+			double ms = c.getMontantSouhaite();
+			long duree = c.getDureeRemboursement();
+			double valProjet = c.getValProjetMax();
+			double montantCreditMax = c.getMontantCreditMax();
+			double mensualites = c.getMensualites();
+			cr.setRevenu(revenu);
+			cr.setMontantSouhaite(ms);
+			cr.setDureeRemboursement(duree);
+			cr.setValProjetMax(valProjet);
+			cr.setMontantCreditMax(montantCreditMax);
+			cr.setMensualites(mensualites);
 			creditUpdated = creditRepository.save(cr);
 			l.info("Credit updated");
 		}
@@ -58,8 +70,10 @@ public class CreditServiceImpl implements ICreditService{
 			l.error("error in updateCredit() : " + e);
 			
 		}
+		
+		
 		return creditUpdated ;
-	}
+	}	
 
 	@Override
 	public void deleteCredit(Long id) {

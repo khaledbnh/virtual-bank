@@ -2,6 +2,7 @@ package tn.esprit.vbank.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,14 +26,10 @@ public class CompteRestController {
 
 	@GetMapping(value = "/getCompte/{id}")
 	public ResponseEntity getCompte(@PathVariable Long id) {
-		Compte compte = null;
-		try {
-			compte = compteService.getCompteById(id);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			return ResponseEntity.badRequest().body(ex.getMessage());
-		}
-		return ResponseEntity.status(HttpStatus.OK).body(compte);
+		Optional<Compte> compte = compteService.getCompteById(id);
+		if(!compte.isPresent())
+		return ResponseEntity.badRequest().body("Compte inexistant");
+		return ResponseEntity.status(HttpStatus.OK).body(compte.get());
 	}
 
 	@GetMapping(value = "/listComptes")

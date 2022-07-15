@@ -1,6 +1,5 @@
 package tn.esprit.vbank.entities;
 
-
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
@@ -14,7 +13,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -37,42 +35,45 @@ import tn.esprit.vbank.enums.TypeCompte;
 @Table(name = "T_COMPTE")
 
 public class Compte implements Serializable {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3477562731811202080L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long compteId;
-	
+
 	@Enumerated(EnumType.STRING)
-	@Column(name="typeCompte")
+	@Column(name = "typeCompte")
 	private TypeCompte typeCompte;
-	
-	@Column(name="numeroCompte")
+
+	@Column(name = "numeroCompte")
 	private String numeroCompte;
-	
-	@Column(name="propiétaire")
+
+	@Column(name = "propiétaire")
 	private String propiétaire;
-	
-	
-	@Column(name="solde")
-	private String solde;
-	
-	@Column(name="dateOuverture")
+
+	@Column(name = "solde")
+	private double solde;
+
+	@Column(name = "dateOuverture")
 	private Date dateOuverture;
-	
-	
+
 	@ManyToOne
-    private Demande demande ;
-	
-	@OneToMany(mappedBy = "compteSource", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<Transaction> transactionsSortants;
-	
+	@JsonIgnore
+	private Demande demande;
+
+	@OneToMany(mappedBy = "compteSource", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<Transaction> transactionsSortants;
+
 	@OneToMany(mappedBy = "compteDestinataire", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<Transaction> transactionsEntrants;
+	private List<Transaction> transactionsEntrants;
+
+	@ManyToOne
+	private Client client;
+
+	@OneToMany(mappedBy = "compte")
+	private List<Credit> credits;
 }
