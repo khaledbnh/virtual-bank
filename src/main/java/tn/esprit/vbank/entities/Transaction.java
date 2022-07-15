@@ -51,6 +51,9 @@ public class Transaction implements Serializable {
     @JoinColumn(name = "compteId", insertable=false, updatable=false)
     private Compte compteDestinataire;
     
+    private Long compteSourceId;
+    private Long compteDestinataireId;
+    
     @Column(name = "nomClient")
     private String nomClient;
     

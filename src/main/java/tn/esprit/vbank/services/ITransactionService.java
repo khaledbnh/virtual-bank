@@ -13,4 +13,6 @@ public interface ITransactionService {
 	void deleteTransaction(long id);
 	
 	Transaction getTransaction(long id);
+	
+	List<Transaction> getTransactionsDuCompte(Long id);
 }

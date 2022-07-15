@@ -43,9 +43,9 @@ public class TransactionRestController {
 		return result;
 	}
 	
-	@GetMapping("/getTransactionsDuCompte")
-	public List<Transaction> getTransactionsByCompteId() {
-		List<Transaction> result = transactionService.getAllTransactions();
+	@GetMapping("/getTransactionsDuCompte/{id}")
+	public List<Transaction> getTransactionsByCompteId(@PathVariable Long id) {
+		List<Transaction> result = transactionService.getTransactionsDuCompte(id);
 		return result;
 	}
 	
@@ -61,21 +61,23 @@ public class TransactionRestController {
 			Optional<Compte> compteDestinataire = compteService.getCompteById(Long.valueOf(input.getCompteDestinataire()));
 			if(!compteDestinataire.isPresent())
 				return new ResponseEntity<>("Compte destinataire inexistant !", HttpStatus.BAD_REQUEST);
-			transaction.setTypeTransaction(TypeTransaction.RETRAIT);
+			transaction.setTypeTransaction(TypeTransaction.DEPOT);
 			Compte compte = compteDestinataire.get();
 			transaction.setCompteDestinataire(compte);
+			transaction.setCompteDestinataireId(compte.getCompteId());
 			transaction.setCompteSource(null);
-			compte.setSolde(compte.getSolde() - input.getMontant());
+			compte.setSolde(compte.getSolde() + input.getMontant());
 			compteService.modifierCompte(compte);
 		} else if(input.getCompteDestinataire().equals("0")) {
 			Optional<Compte> compteSource = compteService.getCompteById(Long.valueOf(input.getCompteSource()));
 			if(!compteSource.isPresent())
 				return new ResponseEntity<>("Compte source inexistant !", HttpStatus.BAD_REQUEST);
-			transaction.setTypeTransaction(TypeTransaction.DEPOT);
+			transaction.setTypeTransaction(TypeTransaction.RETRAIT);
 			Compte compte = compteSource.get();
 			transaction.setCompteSource(compte);
+			transaction.setCompteSourceId(compte.getCompteId());
 			transaction.setCompteDestinataire(null);
-			compte.setSolde(compte.getSolde() + input.getMontant());
+			compte.setSolde(compte.getSolde() - input.getMontant());
 			compteService.modifierCompte(compte);
 		} else {
 			Optional<Compte> compteSource = compteService.getCompteById(Long.valueOf(input.getCompteSource()));
@@ -88,7 +90,9 @@ public class TransactionRestController {
 			Compte source = compteSource.get();
 			Compte dest = compteDestinataire.get();
 			transaction.setCompteSource(source);
+			transaction.setCompteSourceId(source.getCompteId());
 			transaction.setCompteDestinataire(dest);
+			transaction.setCompteDestinataireId(dest.getCompteId());
 			source.setSolde(source.getSolde() - input.getMontant());
 			dest.setSolde(dest.getSolde() + input.getMontant());
 			compteService.modifierCompte(source);

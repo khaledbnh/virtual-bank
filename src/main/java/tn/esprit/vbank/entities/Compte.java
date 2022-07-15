@@ -68,7 +68,7 @@ public class Compte implements Serializable {
 	@JsonIgnore
     private Demande demande ;
 	
-	@OneToMany(mappedBy = "compteSource", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "compteSource", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Transaction> transactionsSortants;
 	
 	@OneToMany(mappedBy = "compteDestinataire", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
