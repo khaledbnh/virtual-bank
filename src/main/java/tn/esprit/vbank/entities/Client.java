@@ -2,13 +2,11 @@ package tn.esprit.vbank.entities;
 
 import lombok.*;
 
-import java.util.Collection;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -17,21 +15,17 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "T_CLIENT")
-public class Client extends User {
+public class Client extends User implements Serializable {
 
-    @OneToMany
-    @Column(name = "comptes")
+    private static final long serialVersionUID = 2L;
+
+    @OneToMany(mappedBy = "propiétaire")
     private List<Compte> comptes;
 
-
-	  @Column(name="nom")
-	  private String nom;
-	
-	  @OneToMany(mappedBy="client")
-    private List<Demande> demandes ;
+    @OneToMany(mappedBy = "client")
+    private List<Demande> demandes;
 
     @Column(name = "role")
-    private String role = "";
+    private String role = "client";
 
 }
