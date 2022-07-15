@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -36,9 +37,31 @@ public class Comment implements Serializable {
 	private User user;
 
 	@ManyToOne
+	
 	private Post post;
 
+	public Set<Comment> getSubComments() {
+		return subComments;
+	}
+
+	public void setSubComments(Set<Comment> subComments) {
+		this.subComments = subComments;
+	}
+
+	public Comment getParentComment() {
+		return parentComment;
+	}
+
+	public void setParentComment(Comment parentComment) {
+		this.parentComment = parentComment;
+	}
+
+	public Comment() {
+		super();
+	}
+
 	@OneToMany(mappedBy = "parentComment")
+	@JsonIgnore
 	private Set<Comment> subComments;
 
 	@ManyToOne

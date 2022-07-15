@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 @Entity
+@Table(name = "T_Like")
 public class Like implements Serializable {
 
 	private static final long serialVersionUID = 6191889143079517027L;
@@ -27,7 +29,7 @@ public class Like implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
-	private Long idComment;
+	private Long idLike;
 	
 	private String content;
 
@@ -45,10 +47,10 @@ public class Like implements Serializable {
 	private Post post;
 
 
-	public Like(Long idComment, String content, Date dateCreation, tn.esprit.vbank.entities.TLike tLike, User user,
+	public Like(Long idLike, String content, Date dateCreation, tn.esprit.vbank.entities.TLike tLike, User user,
 			Post post) {
 		super();
-		this.idComment = idComment;
+		this.idLike = idLike;
 		this.content = content;
 		this.dateCreation = dateCreation;
 		TLike = tLike;
@@ -57,13 +59,18 @@ public class Like implements Serializable {
 	}
 
 
-	public Long getIdComment() {
-		return idComment;
+	public Long getidLike() {
+		return idLike;
 	}
 
 
-	public void setIdComment(Long idComment) {
-		this.idComment = idComment;
+	public Like() {
+		super();
+	}
+
+
+	public void setidLike(Long idLike) {
+		this.idLike = idLike;
 	}
 
 

@@ -38,7 +38,7 @@ public class LikeServiceImpl implements ILikeService {
 	@Override
 	public boolean supprimerLike(Long id) {
 
-		LikeRepository.deleteById(id);
+		LikeRepository.deleteLikeById(id);
 		return true;
 	}
 
@@ -46,6 +46,17 @@ public class LikeServiceImpl implements ILikeService {
 	public Like updateLike(Long id, Like a) {
 
 		return LikeRepository.save(a);
+	}
+
+	@Override
+	public int getNbrLikeByPost(Long id) {
+		return LikeRepository.getnbrLikeByPost(id);
+	}
+
+	@Override
+	public int getNbrDisLikeByPost(Long id) {
+		return LikeRepository.getnbrDisLikeByPost(id);
+
 	}
 
 }
