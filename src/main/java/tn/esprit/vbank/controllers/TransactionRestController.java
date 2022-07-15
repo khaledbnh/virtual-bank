@@ -62,15 +62,21 @@ public class TransactionRestController {
 			if(!compteDestinataire.isPresent())
 				return new ResponseEntity<>("Compte destinataire inexistant !", HttpStatus.BAD_REQUEST);
 			transaction.setTypeTransaction(TypeTransaction.RETRAIT);
-			transaction.setCompteDestinataire(compteDestinataire.get());
+			Compte compte = compteDestinataire.get();
+			transaction.setCompteDestinataire(compte);
 			transaction.setCompteSource(null);
+			compte.setSolde(compte.getSolde() - input.getMontant());
+			compteService.modifierCompte(compte);
 		} else if(input.getCompteDestinataire().equals("0")) {
 			Optional<Compte> compteSource = compteService.getCompteById(Long.valueOf(input.getCompteSource()));
 			if(!compteSource.isPresent())
 				return new ResponseEntity<>("Compte source inexistant !", HttpStatus.BAD_REQUEST);
 			transaction.setTypeTransaction(TypeTransaction.DEPOT);
-			transaction.setCompteSource(compteSource.get());
+			Compte compte = compteSource.get();
+			transaction.setCompteSource(compte);
 			transaction.setCompteDestinataire(null);
+			compte.setSolde(compte.getSolde() + input.getMontant());
+			compteService.modifierCompte(compte);
 		} else {
 			Optional<Compte> compteSource = compteService.getCompteById(Long.valueOf(input.getCompteSource()));
 			if(!compteSource.isPresent())
@@ -79,8 +85,14 @@ public class TransactionRestController {
 			if(!compteDestinataire.isPresent())
 				return new ResponseEntity<>("Compte destinataire inexistant !", HttpStatus.BAD_REQUEST);
 			transaction.setTypeTransaction(TypeTransaction.VIREMENT);
-			transaction.setCompteSource(compteSource.get());
-			transaction.setCompteDestinataire(compteDestinataire.get());
+			Compte source = compteSource.get();
+			Compte dest = compteDestinataire.get();
+			transaction.setCompteSource(source);
+			transaction.setCompteDestinataire(dest);
+			source.setSolde(source.getSolde() - input.getMontant());
+			dest.setSolde(dest.getSolde() + input.getMontant());
+			compteService.modifierCompte(source);
+			compteService.modifierCompte(dest);
 		}
 		
 
