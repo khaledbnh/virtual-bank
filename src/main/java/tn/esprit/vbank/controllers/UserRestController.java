@@ -65,15 +65,4 @@ public class UserRestController {
         return ResponseEntity.status(HttpStatus.OK).body(userPostSave);
     }
 
-    @DeleteMapping(value = "/supprimerAbonnement/{id}")
-    public ResponseEntity deleteAbonnement(@PathVariable Long id) {
-        try {
-            userService.deleteUser(id);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return ResponseEntity.badRequest().body(ex.getMessage());
-        }
-        return ResponseEntity.status(HttpStatus.OK).body("User deleted");
-    }
-
 }

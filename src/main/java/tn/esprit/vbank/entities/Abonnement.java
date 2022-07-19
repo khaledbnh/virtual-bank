@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -44,7 +45,7 @@ public class Abonnement {
 	@OneToMany
 	private List<Compte> comptes;
 
-	@OneToMany
+	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<Carte> cartes;
 
 }
