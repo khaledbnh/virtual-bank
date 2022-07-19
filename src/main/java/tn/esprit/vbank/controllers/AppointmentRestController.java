@@ -42,7 +42,7 @@ public class AppointmentRestController {
     	iAppointmentService.deleteById(id);
 	}
     
-    @GetMapping(value = "getAppointmentById/{idAppointment}")
+    @GetMapping(value = "getAppointmentById/{id}")
     @ResponseBody
 	public Appointment findById(@PathVariable("id") Long id) {
 
