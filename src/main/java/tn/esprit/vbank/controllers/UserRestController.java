@@ -3,6 +3,7 @@ package tn.esprit.vbank.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.vbank.entities.User;
@@ -45,6 +46,8 @@ public class UserRestController {
     public ResponseEntity addUser(@RequestBody User user) {
         User userPostSave = null;
         try {
+            Pbkdf2PasswordEncoder pbkdf2PasswordEncoder = new Pbkdf2PasswordEncoder();
+            user.setPassword(pbkdf2PasswordEncoder.encode(user.getPassword()));
             userPostSave = userService.addUser(user);
         } catch (Exception ex) {
             ex.printStackTrace();
