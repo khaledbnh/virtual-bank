@@ -16,4 +16,8 @@ public interface ILikeService {
 	public boolean supprimerLike(Long id);
 
 	public Like updateLike(Long id, Like a);
+	
+	public int getNbrLikeByPost(Long id);
+	
+	public int getNbrDisLikeByPost(Long id);
 }

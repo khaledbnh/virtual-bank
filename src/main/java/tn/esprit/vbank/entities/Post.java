@@ -3,9 +3,11 @@ package tn.esprit.vbank.entities;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,7 +16,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
@@ -40,10 +44,22 @@ public class Post implements Serializable {
 	
 	private String body;
 	
-	public Post(Long idPost, String title, Date dateCreation, String photo, String video, String body, User user,
-			List<Comment> listComment, List<Like> listLike) {
+	
+	private int nbeComments;
+	
+	public int getNbeComments() {
+		return nbeComments;
+	}
+
+
+	public void setNbeComments(int nbeComments) {
+		this.nbeComments = nbeComments;
+	}
+
+
+	public Post(String title, Date dateCreation, String photo, String video, String body, User user,
+			Set<Comment> listComment, Set<Like> listLike) {
 		super();
-		this.idPost = idPost;
 		this.title = title;
 		this.dateCreation = dateCreation;
 		this.photo = photo;
@@ -125,22 +141,22 @@ public class Post implements Serializable {
 	}
 
 
-	public List<Comment> getListComment() {
+	public Set<Comment> getListComment() {
 		return listComment;
 	}
 
 
-	public void setListComment(List<Comment> listComment) {
+	public void setListComment(Set<Comment> listComment) {
 		this.listComment = listComment;
 	}
 
 
-	public List<Like> getListLike() {
+	public Set<Like> getListLike() {
 		return listLike;
 	}
 
 
-	public void setListLike(List<Like> listLike) {
+	public void setListLike(Set<Like> listLike) {
 		this.listLike = listLike;
 	}
 
@@ -150,15 +166,21 @@ public class Post implements Serializable {
 	}
 
 
-	@ManyToOne
+	@ManyToOne()
 	private User user;
 	
-	@OneToMany(cascade = CascadeType.ALL,mappedBy="post")
-	private List<Comment> listComment;
+	@OneToMany(cascade = CascadeType.ALL,mappedBy="post",fetch=FetchType.EAGER)
+	@JsonIgnore
+	private Set<Comment> listComment;
 	
-	
-	@OneToMany(cascade = CascadeType.ALL,mappedBy="post")
-	private List<Like> listLike;
+	 
+	@OneToMany(cascade = CascadeType.ALL,mappedBy="post",fetch=FetchType.EAGER)
+	@JsonIgnore
+	private Set<Like> listLike;
+
+	public Post() {
+		super();
+	}
 
 
 	
