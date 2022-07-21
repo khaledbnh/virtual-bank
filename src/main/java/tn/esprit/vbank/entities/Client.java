@@ -9,6 +9,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 @Entity
@@ -26,10 +29,13 @@ public class Client extends User {
 
 	@Column(name = "nom")
 	private String nom;
+	
+	private int nbrenf;
 
 	@OneToMany(mappedBy = "client")
 	private List<Demande> demandes;
 
+	 @JsonIgnore	
 	@OneToMany(mappedBy = "client")
 	private List<Compte> compte;
 
