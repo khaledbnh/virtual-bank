@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -36,10 +38,14 @@ public class Credit {
 	private double montantCreditMax;
 	private double mensualites;
 	private Long dureeRemboursement;
+	private Boolean Approve;
+	private Long nbrmois;
 	
 	 @Enumerated(EnumType.STRING)
 	    private TypeCredit typeCredit ; 
-	
+	 
+	 
+	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Compte compte;
 

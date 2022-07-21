@@ -12,8 +12,10 @@ public interface ICreditService{
 	public Credit updateCredit(Credit c,Long id);
 	public void deleteCredit(Long id);
 	public Credit retrieveCredit(Long id);
-	
-	
+	public Credit createCredit(Credit cr , Long idCompte  );
+	public Credit  affectercredit(Long idCredit);
+	public Credit Createothercredit(Credit cr , Long idCompte);
+
 	
 
 	
