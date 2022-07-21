@@ -4,7 +4,7 @@ import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Table;
+import java.io.Serializable;
 
 @Entity
 @Data
@@ -12,8 +12,9 @@ import javax.persistence.Table;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "T_ADMIN")
-public class Admin extends User {
+public class Admin extends User implements Serializable {
+
+    private static final long serialVersionUID = 3L;
 
     @Column(name = "role")
     private String role = "admin";

@@ -6,20 +6,34 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tn.esprit.vbank.enums.TypeNotification;
 
 @Entity
 @Data
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "T_NOTIFICATION")
 public class Notification {
+
+	public Notification(String pieceJointe, TypeNotification typeNotification, User user) {
+		if (pieceJointe == null) {
+			throw new NullPointerException("pieceJointe is marked non-null but is null");
+		}
+		if (typeNotification == null) {
+			throw new NullPointerException("typeNotification is marked non-null but is null");
+		}
+		if (user == null) {
+			throw new NullPointerException("user is marked non-null but is null");
+		}
+		this.pieceJointe = pieceJointe;
+		this.typeNotification = typeNotification;
+		this.user = user;
+	}
 
 	@Id
 	@GeneratedValue
@@ -28,8 +42,10 @@ public class Notification {
 	private String sujet;
 
 	private String contenu;
-	
-	private String type;
+
+	private String pieceJointe;
+
+	private TypeNotification typeNotification;
 
 	@ManyToOne
 	private User user;

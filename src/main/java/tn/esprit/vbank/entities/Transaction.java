@@ -2,18 +2,25 @@ package tn.esprit.vbank.entities;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -79,5 +86,14 @@ public class Transaction implements Serializable {
 
     @Column(name = "reference")
     private String reference;
+    
+    @ManyToMany(fetch = FetchType.LAZY,
+    	      cascade = {
+    	          CascadeType.PERSIST,
+    	          CascadeType.MERGE
+    	      },
+    	      mappedBy = "transactions")
+    	  @JsonIgnore
+    	  private Set<Report> reports = new HashSet<>();
 
 }

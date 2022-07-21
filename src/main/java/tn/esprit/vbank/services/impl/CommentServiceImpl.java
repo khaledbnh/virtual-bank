@@ -2,14 +2,12 @@ package tn.esprit.vbank.services.impl;
 
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tn.esprit.vbank.entities.Comment;
 import tn.esprit.vbank.repositories.CommentRepository;
 import tn.esprit.vbank.services.ICommentService;
-
 
 @Service
 public class CommentServiceImpl implements ICommentService {
@@ -18,7 +16,7 @@ public class CommentServiceImpl implements ICommentService {
 
 	@Autowired
 	private CommentRepository CommentRepository;
-	
+
 	@Override
 	public List<Comment> getComments() {
 
@@ -27,18 +25,25 @@ public class CommentServiceImpl implements ICommentService {
 
 	@Override
 	public Comment getCommentById(Long id) {
-		return CommentRepository.findById(id).get();
+		return CommentRepository.findById(id).orElse(null);
 	}
 
 	@Override
 	public Comment addComment(Comment a) {
+
 		return CommentRepository.save(a);
 	}
 
 	@Override
 	public boolean supprimerComment(Long id) {
 
-		CommentRepository.deleteById(id);
+		try {
+			CommentRepository.deleteById(id);
+
+		} catch (Exception e) {
+			return false;
+		}
+
 		return true;
 	}
 
