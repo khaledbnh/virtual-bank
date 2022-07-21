@@ -42,7 +42,7 @@ public class UserRestController {
     }
 
     @PostMapping(value = "/addUser")
-    public ResponseEntity ajouterAbonnement(@RequestBody User user) {
+    public ResponseEntity addUser(@RequestBody User user) {
         User userPostSave = null;
         try {
             userPostSave = userService.addUser(user);
@@ -53,10 +53,11 @@ public class UserRestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userPostSave);
     }
 
-    @PutMapping(value = "/updateUser")
-    public ResponseEntity updateUser(@RequestBody User user) {
+    @PutMapping(value = "/updateUser/{id}")
+    public ResponseEntity updateUser(@RequestBody User user, @PathVariable Long id) {
         User userPostSave = null;
         try {
+            user.setId(id);
             userPostSave = userService.updateUser(user);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -65,8 +66,8 @@ public class UserRestController {
         return ResponseEntity.status(HttpStatus.OK).body(userPostSave);
     }
 
-    @DeleteMapping(value = "/supprimerAbonnement/{id}")
-    public ResponseEntity deleteAbonnement(@PathVariable Long id) {
+    @DeleteMapping(value = "/deleteUser/{id}")
+    public ResponseEntity deleteUser(@PathVariable Long id) {
         try {
             userService.deleteUser(id);
         } catch (Exception ex) {

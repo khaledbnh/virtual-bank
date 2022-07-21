@@ -3,12 +3,13 @@ package tn.esprit.vbank.services.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import tn.esprit.vbank.entities.Employe;
 import tn.esprit.vbank.repositories.EmployeRepository;
 import tn.esprit.vbank.services.IEmployeService;
 
-
+@Service
 public class EmployeServiceImpl implements IEmployeService{
 
     @Autowired

@@ -29,7 +29,7 @@ public class PostServiceImpl implements IPostService {
 
 	@Override
 	public Post getPostById(Long id) {
-		return postRepository.findById(id).get();
+		return postRepository.findById(id).orElse(null);
 	}
 
 	@Override
@@ -40,7 +40,13 @@ public class PostServiceImpl implements IPostService {
 	@Override
 	public boolean supprimerPost(Long id) {
 
-		postRepository.deleteById(id);
+		try {
+			postRepository.deleteById(id);
+
+		} catch (Exception e) {
+			return false;
+		}
+
 		return true;
 	}
 

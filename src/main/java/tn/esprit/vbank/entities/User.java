@@ -3,6 +3,7 @@ package tn.esprit.vbank.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Data
@@ -10,10 +11,14 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+public class User implements Serializable {
+
+    private static final long serialVersionUID = 4L;
+
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "username")
@@ -27,4 +32,19 @@ public class User {
 
     @Column(name = "role")
     private String role;
+
+    @Column(name = "firstName")
+    private String firstName;
+
+    @Column(name = "lastName")
+    private String lastName;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "actif")
+    private boolean actif;
+
+    @Column(name = "age")
+    private int age;
 }
