@@ -73,8 +73,14 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
-		</dependency>
-		<dependency>
+		</dependency> 
+<dependency>
+    <groupId>com.github.librepdf</groupId>
+    <artifactId>openpdf</artifactId>
+    <version>1.3.8</version>
+</dependency>
+        
+<dependency>
 			<groupId>org.thymeleaf</groupId>
 			<artifactId>thymeleaf</artifactId>
 			<version>3.0.15.RELEASE</version>
@@ -89,11 +95,6 @@
 			<artifactId>stanford-corenlp</artifactId>
 			<version>3.9.2</version>
 			<classifier>models</classifier>
-		</dependency>
-		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>1.6.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springdoc</groupId>
