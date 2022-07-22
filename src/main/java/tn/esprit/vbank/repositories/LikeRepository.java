@@ -29,6 +29,9 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
 	
 	@Query(value="select count(*) from t_like where post_id_post= :idPost and tlike= 'DISLIKE'", nativeQuery=true)
 	int getnbrDisLikeByPost(@Param("idPost") Long idPost);
+	
+	@Query(value="select * from t_like where post_id_post= :idPost and user_id= :idUser", nativeQuery=true)
+	Like getLikeWithIdUserAndIdPost(@Param("idPost") Long idPost,@Param("idUser") Long idUser);
 
 
 }

@@ -20,4 +20,6 @@ public interface ILikeService {
 	public int getNbrLikeByPost(Long id);
 	
 	public int getNbrDisLikeByPost(Long id);
+	
+	public Like getLikeWithIdUserAndIdPost(Long idPost,Long idUser);
 }

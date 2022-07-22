@@ -16,4 +16,12 @@ public interface IPostService {
 	public boolean supprimerPost(Long id);
 
 	public Post updatePost(Long id, Post a);
+	
+	public int getIdPostWithMaxLike();
+	
+	public int getIdPostWithMaxComments();
+	
+	public List<Post>  getListPostWithStatusActive();
+	
+	public List<Post>  getListPostWithStatusDesActive();
 }

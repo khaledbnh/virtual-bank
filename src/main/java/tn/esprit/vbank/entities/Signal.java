@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -20,19 +21,31 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-public class Comment implements Serializable {
+@Table(name = "T_Signal")
+public class Signal implements Serializable {
 
 	private static final long serialVersionUID = 6191889143079517027L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-	private Long idComment;
+	private Long idSignal;
 
 	private String content;
+	
+	private String signalType;
 
 	@Temporal(TemporalType.DATE)
 	private Date dateCreation;
+
+	public String getSignalType() {
+		return signalType;
+	}
+
+
+	public void setSignalType(String signalType) {
+		this.signalType = signalType;
+	}
 
 	@ManyToOne
 	private User user;
@@ -41,39 +54,18 @@ public class Comment implements Serializable {
 	
 	private Post post;
 
-	public Set<Comment> getSubComments() {
-		return subComments;
-	}
-
-	public void setSubComments(Set<Comment> subComments) {
-		this.subComments = subComments;
-	}
-
-	public Comment getParentComment() {
-		return parentComment;
-	}
-
-	public void setParentComment(Comment parentComment) {
-		this.parentComment = parentComment;
-	}
-
-	public Comment() {
+	
+	public Signal() {
 		super();
 	}
 
-	@OneToMany(cascade = CascadeType.ALL,mappedBy = "parentComment")
-	@JsonIgnore
-	private Set<Comment> subComments;
 
-	@ManyToOne
-	private Comment parentComment; 
-
-	public Long getIdComment() {
-		return idComment;
+	public Long getIdSignal() {
+		return idSignal;
 	}
 
-	public void setIdComment(Long idComment) {
-		this.idComment = idComment;
+	public void setIdSignal(Long idSignal) {
+		this.idSignal = idSignal;
 	}
 
 	public String getContent() {
@@ -112,9 +104,9 @@ public class Comment implements Serializable {
 		return serialVersionUID;
 	}
 
-	public Comment(Long idComment, String content, Date dateCreation, User user, Post post) {
+	public Signal(Long idSignal, String content, Date dateCreation, User user, Post post) {
 		super();
-		this.idComment = idComment;
+		this.idSignal = idSignal;
 		this.content = content;
 		this.dateCreation = dateCreation;
 		this.user = user;
