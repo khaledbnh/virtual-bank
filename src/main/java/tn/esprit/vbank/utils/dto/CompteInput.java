@@ -1,4 +1,4 @@
-package tn.esprit.vbank.utils;
+package tn.esprit.vbank.utils.dto;
 
 import javax.validation.constraints.NotBlank;
 

@@ -1,20 +1,20 @@
 package tn.esprit.vbank.controllers;
 
 import java.io.IOException;
-import java.sql.Date;
+
 import java.sql.Timestamp;
-import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,20 +29,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lowagie.text.DocumentException;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import tn.esprit.vbank.entities.Compte;
 import tn.esprit.vbank.entities.Report;
 import tn.esprit.vbank.entities.Transaction;
 import tn.esprit.vbank.enums.TypeIdentiteClient;
 import tn.esprit.vbank.enums.TypeTransaction;
 import tn.esprit.vbank.services.ICompteService;
+import tn.esprit.vbank.services.IReportService;
 import tn.esprit.vbank.services.ITransactionService;
 import tn.esprit.vbank.utils.InputValidator;
 import tn.esprit.vbank.utils.RecuPDFExporter;
 import tn.esprit.vbank.utils.TransactionInput;
 import tn.esprit.vbank.utils.TransactionUtils;
+import tn.esprit.vbank.utils.dto.CalculationResult;
 import tn.esprit.vbank.utils.dto.Recu;
 
 @RestController
+@SecurityRequirement(name = "Bearer Authentication")
 public class TransactionRestController {
 	
 	@Autowired 
@@ -50,6 +54,9 @@ public class TransactionRestController {
 	
 	@Autowired 
 	ICompteService compteService;
+	
+	@Autowired 
+	IReportService reportService;
 	
  
 	@GetMapping("/getAllTransactions")
@@ -151,25 +158,59 @@ public class TransactionRestController {
 		return new ResponseEntity<>("Transaction supprimee avec succes : " + id, HttpStatus.OK);
 	}
 	
-/*	@PostMapping(value = "/saveReport")
-	public ResponseEntity saveReport(@RequestBody Report report) {
-	}
-	*/
-	
 	@GetMapping("/generateReport")
-	public Report generateReport(@RequestParam(value = "Compte") long compteId, @RequestParam(value = "Date debut") String dateDebut,
-			@RequestParam(value = "Date fin") String dateFin) {
+	public ResponseEntity generateReport(@RequestParam(value = "Compte") long compteId, @RequestParam(value = "Date debut") String dateDebutInput,
+			@RequestParam(value = "Date fin") String dateFinInput) {
 		Optional<Compte> compteOpt = compteService.getCompteById(Long.valueOf(compteId));
-	//	if(!compteOpt.isPresent())
-//			return new ResponseEntity<>("Compte source inexistant !", HttpStatus.BAD_REQUEST);
+		if(!compteOpt.isPresent())
+			return new ResponseEntity<>("Compte source inexistant !", HttpStatus.BAD_REQUEST);
+		
+		SimpleDateFormat datetimeFormatter = new SimpleDateFormat("dd/MM/yyyy");
+		Date dateDebut;
+		Date dateFin;
+		try {
+			dateDebut = datetimeFormatter.parse(dateDebutInput);
+			dateFin = datetimeFormatter.parse(dateFinInput);
+		} catch (ParseException e) {
+			return new ResponseEntity<>("Format de Date invalide : la date doit etre au format dd/MM/yyyy", HttpStatus.BAD_REQUEST);			
+		}
+		Timestamp timstampDebut = new Timestamp(dateDebut.getTime());
+		Timestamp timstampFin = new Timestamp(dateFin.getTime());
+		
+		List<Transaction> transactionsList = transactionService.getTransactionsParPeriode(compteId, timstampDebut, timstampFin);
+		Set<Transaction> transactions = new HashSet<Transaction>(transactionsList);
+		
 		Report report = new Report();
 		Compte compte = compteOpt.get();
 		report.setNomClient(compte.getPropiétaire());
-		report.setNumCompte(compte);
-		//create service & repo of report and get transactions by dates and format dates to timestamps
-		return report;
+		report.setInformationsCompte(compte);
+		report.setTransactions(transactions);
+		
+		CalculationResult calc = TransactionUtils.calculateTotals(transactions, compte.getCompteId());
+		report.setTotalDepenses(calc.getTotalDepenses());
+		report.setTotalRecu(calc.getTotalRecu());
+		
+		return new ResponseEntity<Report>(report, HttpStatus.OK);
 	}
 	
-	//getReportById
+	@PostMapping(value = "/saveReport")
+	public ResponseEntity saveReport(@RequestBody Report report) {
+		return new ResponseEntity<>("Report saved successfully : " + reportService.saveReport(report), HttpStatus.CREATED);	
+	}
+	
+	@GetMapping("/getReport/{id}")
+	public ResponseEntity getReportById(@PathVariable Long id) {
+		return new ResponseEntity<Report>(reportService.getReport(id), HttpStatus.OK);
+	}
+	
+	@GetMapping("/getTransaction/{id}")
+	public ResponseEntity getTransactionById(@PathVariable Long id) {
+		return new ResponseEntity<Transaction>(transactionService.getTransaction(id), HttpStatus.OK);
+	}
+	
+	@GetMapping("/getTransaction")
+	public ResponseEntity getTransactionByReference(@RequestParam("reference") String ref) {
+		return new ResponseEntity<Transaction>(transactionService.getTransactionByReference(ref), HttpStatus.OK);
+	}
 	
 }

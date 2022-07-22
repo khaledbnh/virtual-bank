@@ -1,6 +1,10 @@
 package tn.esprit.vbank.utils;
 
 import java.util.Random;
+import java.util.Set;
+
+import tn.esprit.vbank.entities.Transaction;
+import tn.esprit.vbank.utils.dto.CalculationResult;
 
 public class TransactionUtils {
 
@@ -15,5 +19,20 @@ public class TransactionUtils {
 	      .limit(targetStringLength)
 	      .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
 	      .toString();
+    }
+    
+    public static CalculationResult calculateTotals(Set<Transaction> transactions, Long compte) {
+    	double totalDepenses = 0d;
+    	double totalRecu = 0d;
+    	if (!transactions.isEmpty()) {
+    		for (Transaction t : transactions) {
+    			if (t.getCompteSourceId() == compte) {
+    				totalDepenses = totalDepenses + t.getMontant();
+    			} else {
+    				totalRecu = totalRecu + t.getMontant();    			
+    			}
+    		}
+    	}
+    	return new CalculationResult(totalDepenses, totalRecu);
     }
 }

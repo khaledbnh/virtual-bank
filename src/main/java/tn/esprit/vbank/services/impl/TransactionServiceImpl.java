@@ -1,5 +1,6 @@
 package tn.esprit.vbank.services.impl;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +35,20 @@ public class TransactionServiceImpl implements ITransactionService {
 	public Transaction getTransaction(long id) {
 		return transactionRepo.findById(id).get();
 	}
+	
+	@Override
+	public Transaction getTransactionByReference(String reference) {
+		return transactionRepo.getTransactionsByReference(reference);
+	}
 
 	@Override
 	public List<Transaction> getTransactionsDuCompte(Long id) {
 		return transactionRepo.getTransactionsByCompteId(id);
+	}
+	
+	@Override
+	public List<Transaction> getTransactionsParPeriode(Long compteId, Timestamp debut, Timestamp fin) {
+		return transactionRepo.getTransactionsParPeriode(compteId, debut, fin);
 	}
 
 }

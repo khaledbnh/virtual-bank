@@ -86,14 +86,5 @@ public class Transaction implements Serializable {
 
     @Column(name = "reference")
     private String reference;
-    
-    @ManyToMany(fetch = FetchType.LAZY,
-    	      cascade = {
-    	          CascadeType.PERSIST,
-    	          CascadeType.MERGE
-    	      },
-    	      mappedBy = "transactions")
-    	  @JsonIgnore
-    	  private Set<Report> reports = new HashSet<>();
-
+  
 }
