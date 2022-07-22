@@ -7,6 +7,8 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -44,6 +46,8 @@ public class Post implements Serializable {
 	
 	private String body;
 	
+	@Enumerated(EnumType.STRING)
+	private Status status=Status.ACTIVE;
 	
 	private int nbeComments;
 	
@@ -173,7 +177,30 @@ public class Post implements Serializable {
 	@JsonIgnore
 	private Set<Comment> listComment;
 	
+	@OneToMany(cascade = CascadeType.ALL,mappedBy="post",fetch=FetchType.EAGER)
+	@JsonIgnore
+	private Set<Signal> listSignal;
 	 
+	public Status getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+
+	public Set<Signal> getListSignal() {
+		return listSignal;
+	}
+
+
+	public void setListSignal(Set<Signal> listSignal) {
+		this.listSignal = listSignal;
+	}
+
+
 	@OneToMany(cascade = CascadeType.ALL,mappedBy="post",fetch=FetchType.EAGER)
 	@JsonIgnore
 	private Set<Like> listLike;
