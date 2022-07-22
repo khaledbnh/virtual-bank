@@ -82,7 +82,7 @@ public class RecuPDFExporter {
     		table.addCell("*");
     		table.addCell("*");
     	}
-    	table.addCell(recu.getMontant());
+    	table.addCell(recu.getMontant() + " DT");
         table.addCell(recu.getTimestamp());
         table.addCell(recu.getReference());
     }

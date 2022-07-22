@@ -2,7 +2,9 @@ package tn.esprit.vbank.entities;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,6 +15,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -66,9 +69,11 @@ public class Compte implements Serializable {
 	private Demande demande;
 
 	@OneToMany(mappedBy = "compteSource", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JsonIgnore
 	private List<Transaction> transactionsSortants;
 
 	@OneToMany(mappedBy = "compteDestinataire", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonIgnore
 	private List<Transaction> transactionsEntrants;
 	
 	@JsonIgnore
@@ -78,4 +83,5 @@ public class Compte implements Serializable {
 	@JsonIgnore
 	@OneToMany(mappedBy = "compte")
 	private List<Credit> credits;
+	
 }
