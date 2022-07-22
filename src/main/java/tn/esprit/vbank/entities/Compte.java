@@ -70,10 +70,12 @@ public class Compte implements Serializable {
 
 	@OneToMany(mappedBy = "compteDestinataire", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Transaction> transactionsEntrants;
-
+	
+	@JsonIgnore
 	@ManyToOne
 	private Client client;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "compte")
 	private List<Credit> credits;
 }
