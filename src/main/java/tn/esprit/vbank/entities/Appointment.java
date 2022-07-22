@@ -10,6 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import tn.esprit.vbank.enums.AppointmentStatus;
 
@@ -21,7 +25,11 @@ public class Appointment {
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long id;
 	private Timestamp createdAt = new Timestamp(System.currentTimeMillis());
+	@NotNull(message = "Le champ appointmentDate est obligatoire")
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate appointmentDate;
+	@NotNull(message = "Le champ appointmentStartTime est obligatoire")
+	@JsonFormat(pattern="HH:mm:ss")
 	private Time appointmentStartTime;
 	private Time appointmentEndTime;
 	private String nameOfClient;
@@ -111,7 +119,8 @@ public class Appointment {
 	public void setAppointmentEndTime(Time appointmentEndTime) {
 		this.appointmentEndTime = appointmentEndTime;
 	}
-
+	@NotNull(message = "Le nom est obligatoire")
+	@Size(min = 4, max = 20, message = "Le nobmre de caractere doit compris entre 5 et 20 ")
 	public String getNameOfClient() {
 		return nameOfClient;
 	}
