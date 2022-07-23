@@ -6,14 +6,16 @@ import tn.esprit.vbank.entities.Abonnement;
 
 public interface IAbonnementService {
 
-	Abonnement recupererAbonnement(Long id);
+	public Abonnement recupererAbonnement(Long id);
 
-	List<Abonnement> listAbonnements();
+	public List<Abonnement> listAbonnements();
 
 	public Abonnement ajouterAbonnement(Abonnement abonnement);
 
-	Abonnement modifierAbonnement(Abonnement abonnement);
+	public Abonnement modifierAbonnement(Abonnement abonnement);
 
-	void supprimerAbonnement(Long id);
+	public void supprimerAbonnement(Long id);
+
+	public void affecterAbonnementCompte(Long idAbonnement, Long idCompte);
 	
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import tn.esprit.vbank.entities.Carte;
@@ -81,4 +82,17 @@ public class CarteRestController {
 		}
 		return ResponseEntity.status(HttpStatus.OK).body("Carte supprimer");
 	}
+
+	@PutMapping(value = "/affecterCarteAbonnement")
+	public ResponseEntity affecterCarteAbonnement(@RequestParam("idCarte") Long idCarte,
+			@RequestParam("idAbonnement") Long idAbonnement, @RequestParam("idCompte") Long idCompte) {
+		try {
+			carteService.affecterCarteAbonnement(idCarte, idAbonnement, idCompte);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return ResponseEntity.badRequest().body(ex.getMessage());
+		}
+		return ResponseEntity.status(HttpStatus.OK).body("Carte affecter avec succées");
+	}
+	
 }

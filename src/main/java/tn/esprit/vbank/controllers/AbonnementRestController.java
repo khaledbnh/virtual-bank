@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import tn.esprit.vbank.entities.Abonnement;
@@ -80,6 +81,18 @@ public class AbonnementRestController {
 			return ResponseEntity.badRequest().body(ex.getMessage());
 		}
 		return ResponseEntity.status(HttpStatus.OK).body("Abonnement supprimer");
+	}
+
+	@PutMapping(value = "/affecterAbonnementCompte")
+	public ResponseEntity affecterAbonnementCompte(@RequestParam("idCompte") Long idCompte,
+			@RequestParam("idAbonnement") Long idAbonnement) {
+		try {
+			abonnementService.affecterAbonnementCompte(idAbonnement, idCompte);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return ResponseEntity.badRequest().body(ex.getMessage());
+		}
+		return ResponseEntity.status(HttpStatus.OK).body("Abonnement affecter avec succées");
 	}
 
 }

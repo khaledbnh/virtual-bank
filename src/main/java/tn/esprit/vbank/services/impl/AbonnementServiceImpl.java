@@ -1,19 +1,32 @@
 package tn.esprit.vbank.services.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tn.esprit.vbank.entities.Abonnement;
+import tn.esprit.vbank.entities.Compte;
+import tn.esprit.vbank.entities.Notification;
+import tn.esprit.vbank.enums.TypeNotification;
 import tn.esprit.vbank.repositories.AbonnementRepository;
+import tn.esprit.vbank.repositories.CompteRepository;
 import tn.esprit.vbank.services.IAbonnementService;
+import tn.esprit.vbank.services.INotificationService;
 
 @Service
 public class AbonnementServiceImpl implements IAbonnementService {
 
 	@Autowired
 	private AbonnementRepository abonnementRepository;
+
+	@Autowired
+	private CompteRepository compteRepository;
+
+	@Autowired
+	private INotificationService notificationService;
 
 	@Override
 	public Abonnement recupererAbonnement(Long id) {
@@ -40,4 +53,17 @@ public class AbonnementServiceImpl implements IAbonnementService {
 		abonnementRepository.deleteById(id);
 	}
 
+	@Override
+	public void affecterAbonnementCompte(Long idAbonnement, Long idCompte) {
+		Compte compte = compteRepository.findById(idCompte).get();
+		Abonnement abonnement = abonnementRepository.findById(idAbonnement).get();
+		compte.setAbonnement(abonnement);
+		compte = compteRepository.save(compte);
+		Map<String, String> data = new HashMap<>();
+		data.put("nom", compte.getClient().getNom());
+		data.put("abonnement", abonnement.getNom());
+		data.put("frais", String.valueOf(abonnement.getFrais()));
+		notificationService.notifier(new Notification("", TypeNotification.AFFECTATION_ABONNEMENT, compte.getClient()),
+				data);
+	}
 }
