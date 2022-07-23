@@ -85,14 +85,14 @@ public class CarteRestController {
 
 	@PutMapping(value = "/affecterCarteAbonnement")
 	public ResponseEntity affecterCarteAbonnement(@RequestParam("idCarte") Long idCarte,
-			@RequestParam("idAbonnement") Long idAbonnement, @RequestParam("idCompte") Long idCompte) {
+			@RequestParam("idCompte") Long idCompte, @RequestParam("idUser") Long idUser) {
 		try {
-			carteService.affecterCarteAbonnement(idCarte, idAbonnement, idCompte);
+			carteService.affecterCarteAbonnement(idCarte, idCompte, idUser);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			return ResponseEntity.badRequest().body(ex.getMessage());
 		}
 		return ResponseEntity.status(HttpStatus.OK).body("Carte affecter avec succées");
 	}
-	
+
 }

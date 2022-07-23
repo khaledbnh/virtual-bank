@@ -12,9 +12,9 @@ public class ScheduledTask {
 
 	@Autowired
 	private CompteRepository compteRepository;
-
-//	@Scheduled(fixedRateString = "${rate:1000}")
-	public void scheduleFixedRateTask() {
+	
+	@Scheduled(cron = "@monthly")
+	public void monthlyScheduleTask() {
 		Iterable<Compte> comptes = compteRepository.findAll();
 		comptes.forEach(c -> {
 			if (c.getAbonnement() != null) {
@@ -27,5 +27,5 @@ public class ScheduledTask {
 			}
 		});
 	}
-
+	
 }

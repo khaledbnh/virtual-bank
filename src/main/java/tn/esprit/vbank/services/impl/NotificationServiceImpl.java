@@ -86,7 +86,8 @@ public class NotificationServiceImpl implements INotificationService {
 	private Template getTemplate(TypeNotification typeNotification) {
 		Template template = null;
 		try {
-			template = cfg.getTemplate(typeNotification.toString().toLowerCase());
+			template = cfg.getTemplate("notification/templates/" + 
+		typeNotification.toString().toLowerCase() + ".ftlh");
 		} catch (TemplateNotFoundException e) {
 			e.printStackTrace();
 		} catch (MalformedTemplateNameException e) {
@@ -120,7 +121,7 @@ public class NotificationServiceImpl implements INotificationService {
 			mimeMessageHelper.setFrom(new InternetAddress(env.getProperty("spring.mail.username")));
 			mimeMessageHelper.setTo(new InternetAddress(email));
 			mimeMessageHelper.setText(contenu);
-			if (pieceJointe != null && pieceJointe.isEmpty()) {
+			if (pieceJointe != null && !pieceJointe.isEmpty()) {
 				FileSystemResource file = new FileSystemResource(new File(pieceJointe));
 				mimeMessageHelper.addAttachment(file.getFilename(), file);
 			}

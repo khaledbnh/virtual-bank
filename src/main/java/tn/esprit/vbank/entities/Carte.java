@@ -10,6 +10,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -26,10 +28,12 @@ import lombok.Setter;
 public class Carte {
 
 	@Id
+	@GeneratedValue
 	private Long id;
 
-	@Temporal(value = TemporalType.DATE)
-	private Date dateExpiration;
+	private Long uuid;
+	
+	private String dateExpiration;
 
 	private int ccv;
 

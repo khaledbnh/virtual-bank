@@ -16,6 +16,6 @@ public interface ICarteService {
 
 	public void supprimerCarte(Long id);
 
-	public void affecterCarteAbonnement(Long idCarte, Long idAbonnement, Long idUser);
+	public void affecterCarteAbonnement(Long idCarte, Long idCompte, Long idUser);
 
 }

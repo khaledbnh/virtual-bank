@@ -85,9 +85,9 @@ public class AbonnementRestController {
 
 	@PutMapping(value = "/affecterAbonnementCompte")
 	public ResponseEntity affecterAbonnementCompte(@RequestParam("idCompte") Long idCompte,
-			@RequestParam("idAbonnement") Long idAbonnement) {
+			@RequestParam("idAbonnement") Long idAbonnement, @RequestParam("idUser") Long idUser) {
 		try {
-			abonnementService.affecterAbonnementCompte(idAbonnement, idCompte);
+			abonnementService.affecterAbonnementCompte(idAbonnement, idCompte, idUser);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			return ResponseEntity.badRequest().body(ex.getMessage());

@@ -16,6 +16,6 @@ public interface IAbonnementService {
 
 	public void supprimerAbonnement(Long id);
 
-	public void affecterAbonnementCompte(Long idAbonnement, Long idCompte);
+	public void affecterAbonnementCompte(Long idAbonnement, Long idCompte, Long idUser);
 	
 }
