@@ -57,4 +57,25 @@ public class PostServiceImpl implements IPostService {
 		return postRepository.save(a);
 	}
 
+	@Override
+	public int getIdPostWithMaxLike() {
+		return postRepository.getIdPostWithMaxLike();
+	}
+
+	@Override
+	public int getIdPostWithMaxComments() {
+		return postRepository.getIdPostWithMaxComments();
+	}
+
+	@Override
+	public List<Post> getListPostWithStatusActive() {
+		
+		return postRepository.getListPostWithStatusActive();
+	}
+
+	@Override
+	public List<Post> getListPostWithStatusDesActive() {
+		return postRepository.getListPostWithStatusDesActive();
+	}
+
 }

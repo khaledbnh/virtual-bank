@@ -27,7 +27,7 @@ public class LikeServiceImpl implements ILikeService {
 
 	@Override
 	public Like getLikeById(Long id) {
-		return LikeRepository.findById(id).get();
+		return LikeRepository.findById(id).orElse(null);
 	}
 
 	@Override
@@ -57,6 +57,12 @@ public class LikeServiceImpl implements ILikeService {
 	public int getNbrDisLikeByPost(Long id) {
 		return LikeRepository.getnbrDisLikeByPost(id);
 
+	}
+
+	@Override
+	public Like getLikeWithIdUserAndIdPost(Long idPost, Long idUser) {
+	
+		return LikeRepository.getLikeWithIdUserAndIdPost(idPost, idUser);
 	}
 
 }
