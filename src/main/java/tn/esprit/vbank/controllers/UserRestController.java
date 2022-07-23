@@ -3,12 +3,14 @@ package tn.esprit.vbank.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.vbank.entities.Admin;
+import tn.esprit.vbank.entities.Client;
 import tn.esprit.vbank.entities.User;
 import tn.esprit.vbank.services.IUserService;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +19,8 @@ public class UserRestController {
 
     @Autowired
     private IUserService userService;
+
+    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     @GetMapping(value = "/getUser/{id}")
     public ResponseEntity getUser(@PathVariable Long id) {
@@ -44,10 +48,26 @@ public class UserRestController {
 
     @PostMapping(value = "/addUser")
     public ResponseEntity addUser(@RequestBody User user) {
+        return getResponseEntity(user);
+    }
+
+    @PostMapping(value = "/addClient")
+    public ResponseEntity addClient(@RequestBody Client client) {
+        return getResponseEntity(client);
+    }
+
+    @PostMapping(value = "/addAdmin")
+    public ResponseEntity addAdmin(@RequestBody Admin admin) {
+        return getResponseEntity(admin);
+    }
+
+    private ResponseEntity<? extends Serializable> getResponseEntity(User user) {
         User userPostSave = null;
         try {
-            Pbkdf2PasswordEncoder pbkdf2PasswordEncoder = new Pbkdf2PasswordEncoder();
-            user.setPassword(pbkdf2PasswordEncoder.encode(user.getPassword()));
+            if (userService.getUserByEmail(user.getEmail()) != null) {
+                throw new Exception("A user is already registered with this email");
+            }
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             userPostSave = userService.addUser(user);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -61,6 +81,7 @@ public class UserRestController {
         User userPostSave = null;
         try {
             user.setId(id);
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             userPostSave = userService.updateUser(user);
         } catch (Exception ex) {
             ex.printStackTrace();

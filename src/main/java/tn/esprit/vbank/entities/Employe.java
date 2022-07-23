@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tn.esprit.vbank.enums.AppointmentStatus;
+import tn.esprit.vbank.enums.UserRole;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,12 +20,13 @@ import java.util.List;
 public class Employe extends User implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    private String role = "employe";
-
     @JsonIgnore
     @OneToMany(mappedBy = "employe")
     private List<Appointment> appointment;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private UserRole role = UserRole.EMPLOYE;
 
     public Employe(Long id, String prenom, String nom, String email, String password, boolean actif, AppointmentStatus appointmentStatus) {
         super();
