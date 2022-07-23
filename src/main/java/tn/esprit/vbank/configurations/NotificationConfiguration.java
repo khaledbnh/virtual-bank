@@ -1,7 +1,8 @@
 package tn.esprit.vbank.configurations;
 
-import java.io.File;
 import java.io.IOException;
+
+import org.springframework.context.annotation.Bean;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
@@ -9,9 +10,10 @@ import freemarker.template.TemplateExceptionHandler;
 @org.springframework.context.annotation.Configuration
 public class NotificationConfiguration {
 
-	public Configuration initNotificationConfiguration() throws IOException {
+	@Bean
+	Configuration configuration() throws IOException {
 		Configuration configuration = new Configuration(Configuration.VERSION_2_3_31);
-		configuration.setDirectoryForTemplateLoading(new File("/notification/templates"));
+		configuration.setClassForTemplateLoading(NotificationConfiguration.class, "/notification/templates");
 		configuration.setDefaultEncoding("UTF-8");
 		configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 		configuration.setLogTemplateExceptions(false);

@@ -1,8 +1,9 @@
 package tn.esprit.vbank.entities;
 
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
@@ -11,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -40,12 +43,13 @@ public class Abonnement {
 
 	private String type;
 
-	private float frais;
+	private double frais;
 
-	@OneToMany
-	private List<Compte> comptes;
+	@OneToMany(mappedBy = "abonnement", orphanRemoval = true, cascade = CascadeType.ALL)
+	@JsonIgnore
+	private Set<Compte> comptes = new HashSet();
 
 	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
-	private List<Carte> cartes;
+	private Set<Carte> cartes = new HashSet();
 
 }

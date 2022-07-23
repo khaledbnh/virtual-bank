@@ -34,6 +34,8 @@ public class Carte {
 	private int ccv;
 
 	private String type;
+	
+	private double frais;
 
 	@ManyToOne
 	private Abonnement abonnement;
