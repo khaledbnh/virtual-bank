@@ -1,10 +1,9 @@
 package tn.esprit.vbank.entities;
 
 import lombok.*;
+import tn.esprit.vbank.enums.UserRole;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
@@ -32,8 +31,8 @@ public class Client extends User implements Serializable {
    @OneToMany(mappedBy = "client")
    private List<Demande> demandes;
 
-
+   @Enumerated(EnumType.STRING)
    @Column(name = "role")
-   private String role = "client";
+   private UserRole role = UserRole.CLIENT;
 
 }
